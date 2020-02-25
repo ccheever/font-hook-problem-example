@@ -8,7 +8,8 @@ import { useAsyncEffect } from "use-async-effect";
 export default function App(props, context) {
   // return <ClassApp />;
   // return <HooksApp />;
-  return <UseExpoApp />;
+  // return <UseExpoApp />;
+  return <UseFonts_ccheeverApp />;
 }
 
 class ClassApp extends React.Component {
@@ -36,8 +37,6 @@ class ClassApp extends React.Component {
     );
   }
 }
-
-async function loadFontAync() {}
 
 function HooksApp() {
   console.log("HooksApp_render");
@@ -75,6 +74,34 @@ function UseExpoApp() {
       ) : null}
     </View>
   );
+}
+
+function UseFonts_ccheeverApp() {
+  console.log("UseFonts_ccheeverApp_render");
+  let [fontLoaded] = useFonts_ccheever({
+    "Inter-BlackItalic": require("./assets/Inter-BlackItalic.otf")
+  });
+
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      {fontLoaded ? (
+        <Text style={{ fontFamily: "Inter-BlackItalic", fontSize: 56 }}>
+          Hello, world!
+        </Text>
+      ) : null}
+    </View>
+  );
+}
+
+function useFonts_ccheever(fonts) {
+  let [fontsLoaded, setFontsLoaded] = useState(false);
+  useEffect(() => {
+    (async () => {
+      await Font.loadAsync(fonts);
+      setFontsLoaded(true);
+    })();
+  });
+  return [fontsLoaded];
 }
 
 const styles = StyleSheet.create({
